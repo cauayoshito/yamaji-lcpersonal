@@ -14,7 +14,7 @@ import FloatingWhatsapp from "@/components/FloatingWhatsApp";
 
 // ✅ Helper de WhatsApp (troque pelo número do Lucas)
 const waLink = (message) =>
-  `https://wa.me/5571981977447?text=${encodeURIComponent(message || "")}`;
+  `https://wa.me/5571983400651?text=${encodeURIComponent(message || "")}`;
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
