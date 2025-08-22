@@ -200,8 +200,8 @@ export default function Home() {
 
                 <p className="mt-4 text-base sm:text-lg text-white/80 max-w-xl">
                   Consultoria esportiva com protocolo individualizado, treinos
-                  progressivos e acompanhamento diário.
-                  <b> Suporte ativo das 6h às 22h</b> para você nunca ficar sem
+                  progressivos e acompanhamento diário.{" "}
+                  <b>Suporte ativo das 6h às 22h</b> para você nunca ficar sem
                   resposta.
                 </p>
 
@@ -347,6 +347,24 @@ export default function Home() {
                     alt: "Antes e depois — Aluno 3",
                     nome: "Aluno 3",
                     txt: "Execução correta = evolução consistente.",
+                  },
+                  {
+                    img: "/images/antes4.jpg", // NOVO
+                    alt: "Antes e depois — Aluno 4",
+                    nome: "Aluno 4",
+                    txt: "Perda de gordura e maior definição.",
+                  },
+                  {
+                    img: "/images/antes5.jpg", // NOVO
+                    alt: "Antes e depois — Aluna 5",
+                    nome: "Aluna 5",
+                    txt: "Evolução no shape e postura.",
+                  },
+                  {
+                    img: "/images/antes6.jpg", // NOVO
+                    alt: "Antes e depois — Aluna 5",
+                    nome: "Aluna 6",
+                    txt: "Redução de gordura abdominal e mais definição, mantendo a massa magra.",
                   },
                 ].map((c, i) => (
                   <div
