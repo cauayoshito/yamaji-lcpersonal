@@ -8,7 +8,7 @@ export default function SiteFooter() {
         {/* Esquerda: logo + tagline */}
         <div className="flex items-center gap-3">
           <Image
-            src="/images/lc.png" // usa a tua logo aprovada
+            src="/images/logo.png" // usa a tua logo aprovada
             alt="Lucas Costa Personal"
             width={110}
             height={40}

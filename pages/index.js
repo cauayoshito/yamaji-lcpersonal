@@ -38,10 +38,10 @@ export default function Home() {
     },
   });
 
-  // TRANSFORMAÇÕES slider (mantemos instância para avançar com botão)
+  // TRANSFORMAÇÕES slider (com “peek” no mobile e botão de avanço)
   const [transSliderRef, transSlider] = useKeenSlider({
     loop: true,
-    slides: { perView: 1, spacing: 16 },
+    slides: { perView: 1.1, spacing: 12 },
     breakpoints: {
       "(min-width: 768px)": { slides: { perView: 2, spacing: 24 } },
       "(min-width: 1024px)": { slides: { perView: 3, spacing: 32 } },
@@ -83,7 +83,7 @@ export default function Home() {
               alt="RL TEAM — Consultoria Esportiva"
               width={130}
               height={48}
-              className="h-20 w-auto"
+              className="h-10 md:h-12 w-auto"
               priority
             />
           </Link>
@@ -94,6 +94,9 @@ export default function Home() {
             </a>
             <a href="#oferecemos" className="text-white/80 hover:text-white">
               O que oferecemos
+            </a>
+            <a href="#resultados" className="text-white/80 hover:text-white">
+              Resultados
             </a>
             <a href="#planos" className="text-white/80 hover:text-white">
               Planos
@@ -132,6 +135,7 @@ export default function Home() {
             {[
               ["#sobre", "Sobre"],
               ["#oferecemos", "O que oferecemos"],
+              ["#resultados", "Resultados"],
               ["#planos", "Planos"],
               ["#faq", "FAQ"],
               ["#contato", "Contato"],
@@ -175,7 +179,7 @@ export default function Home() {
                 <p className="text-white/70 font-medium mb-2">
                   CONSULTORIA ESPORTIVA
                 </p>
-                <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight">
+                <h1 className="text-[26px] sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight">
                   +200 alunos transformados com a{" "}
                   <span className="text-white">RL TEAM</span> — resultados
                   reais, sem extremismos
@@ -206,7 +210,7 @@ export default function Home() {
                     href={waLink("Quero meu protocolo com a RL TEAM.")}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-[15px] font-semibold text-[#0b2e25] shadow-lg hover:bg-gray-100"
+                    className="inline-flex w-full sm:w-auto items-center justify-center rounded-full bg-white px-6 py-3 text-[15px] font-semibold text-[#0b2e25] shadow-lg hover:bg-gray-100"
                   >
                     🚀 Começar agora no WhatsApp
                   </motion.a>
@@ -233,7 +237,7 @@ export default function Home() {
                           alt={f.alt}
                           fill
                           sizes="(max-width: 640px) 92vw, (max-width: 1024px) 480px, 480px"
-                          className="object-cover transition-transform duration-500 ease-out hover:scale-105 will-change-transform"
+                          className="object-cover transition-transform duration-500 ease-out hover:scale-[1.08] will-change-transform"
                           priority={i === 0}
                         />
                       </div>
@@ -246,7 +250,7 @@ export default function Home() {
         </section>
 
         {/* SOBRE */}
-        <section id="sobre" className="bg-[#0d1622]">
+        <section id="sobre" className="bg-[#0d1622] scroll-mt-24">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 md:py-16 text-center">
             <h2 className="text-2xl sm:text-3xl font-bold mb-3">Quem somos</h2>
             <p className="text-white/80 text-base sm:text-lg">
@@ -259,7 +263,10 @@ export default function Home() {
         </section>
 
         {/* O QUE OFERECEMOS */}
-        <section id="oferecemos" className="px-4 sm:px-6 py-14 md:py-16">
+        <section
+          id="oferecemos"
+          className="px-4 sm:px-6 py-14 md:py-16 scroll-mt-24"
+        >
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10">
               O que estamos oferecendo?
@@ -303,14 +310,24 @@ export default function Home() {
           </div>
         </section>
 
-        {/* TRANSFORMAÇÕES + botão "Mais depoimentos" */}
-        <section className="px-4 sm:px-6 py-14 md:py-16">
+        {/* TRANSFORMAÇÕES + botões "Mais depoimentos" (desktop) e "+1 depoimento" (mobile) */}
+        <section
+          id="resultados"
+          className="px-4 sm:px-6 py-14 md:py-16 scroll-mt-24"
+        >
           <div className="max-w-6xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
               Transformações Reais
             </h2>
 
             <div className="relative">
+              {/* Hints/gradientes nas bordas (mobile) */}
+              <div className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-[#0b1420] to-transparent rounded-l-xl sm:hidden" />
+              <div className="pointer-events-none absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-[#0b1420] to-transparent rounded-r-xl sm:hidden" />
+              <span className="absolute -top-6 right-2 text-[11px] text-white/70 sm:hidden">
+                arraste →
+              </span>
+
               <div ref={transSliderRef} className="keen-slider">
                 {[
                   {
@@ -336,7 +353,7 @@ export default function Home() {
                     key={i}
                     className="keen-slider__slide overflow-hidden rounded-xl border border-white/10 bg-[#0d1622] transition shadow-lg hover:border-white/40"
                   >
-                    <div className="relative w-full aspect-[5/3]">
+                    <div className="relative w-full aspect-[5/3] rounded-t-xl overflow-hidden">
                       <Image
                         src={c.img}
                         alt={c.alt}
@@ -350,7 +367,7 @@ export default function Home() {
                       <p className="text-white/70 text-sm italic">{c.txt}</p>
                       <a
                         href="#planos"
-                        className="mt-3 inline-block rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b2e25]"
+                        className="mt-3 inline-block w-full sm:w-auto rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b2e25]"
                       >
                         Ver plano semelhante
                       </a>
@@ -359,21 +376,33 @@ export default function Home() {
                 ))}
               </div>
 
-              {/* Botão que sinaliza e avança o carrossel */}
+              {/* Botão absoluto – APENAS tablet/desktop */}
               <button
                 onClick={() => transSlider.current?.next()}
-                className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs sm:text-sm font-semibold text-[#0b2e25] shadow-md hover:bg-white"
+                className="hidden sm:flex absolute bottom-3 right-3 items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-sm font-semibold text-[#0b2e25] shadow-md hover:bg-white"
                 aria-label="Mais depoimentos"
                 type="button"
               >
                 Mais depoimentos <ChevronRight size={16} />
               </button>
             </div>
+
+            {/* Botão MOBILE fixo abaixo do carrossel */}
+            <div className="mt-3 sm:hidden">
+              <button
+                onClick={() => transSlider.current?.next()}
+                className="w-full inline-flex items-center justify-center gap-1 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b2e25] shadow-md"
+                aria-label="+1 depoimento"
+                type="button"
+              >
+                +1 depoimento <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
         </section>
 
         {/* PLANOS */}
-        <section id="planos" className="bg-[#0d1622]">
+        <section id="planos" className="bg-[#0d1622] scroll-mt-24">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-16">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10">
               Planos
@@ -460,7 +489,7 @@ export default function Home() {
         </section>
 
         {/* FAQ */}
-        <section id="faq" className="px-4 sm:px-6 py-14 md:py-16">
+        <section id="faq" className="px-4 sm:px-6 py-14 md:py-16 scroll-mt-24">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
               Perguntas Frequentes
@@ -497,7 +526,7 @@ export default function Home() {
         {/* CONTATO */}
         <section
           id="contato"
-          className="relative overflow-hidden bg-gradient-to-b from-white/20 via-white/10 to-transparent"
+          className="relative overflow-hidden bg-gradient-to-b from-white/20 via-white/10 to-transparent scroll-mt-24"
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 md:py-16 text-center">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
