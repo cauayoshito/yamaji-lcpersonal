@@ -1,26 +1,45 @@
 // pages/index.js
-import { HelpCircle, CheckCircle2 } from "lucide-react";
+import {
+  HelpCircle,
+  CheckCircle2,
+  ChevronRight,
+  Star,
+  Clock,
+} from "lucide-react";
 import { useState } from "react";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import SiteFooter from "@/components/SiteFooter";
 
-import AccordionItem from "@/components/AccordionItem";
 import Seo from "@/components/Seo";
+import AccordionItem from "@/components/AccordionItem";
+import SiteFooter from "@/components/SiteFooter";
 import FloatingWhatsapp from "@/components/FloatingWhatsApp";
 
-// ✅ Helper de WhatsApp (troque pelo número do Lucas)
+// ✅ WhatsApp — troque o número se necessário
 const waLink = (message) =>
-  `https://wa.me/5571983400651?text=${encodeURIComponent(message || "")}`;
+  `https://wa.me/5571983400651?text=${encodeURIComponent(
+    message || "Olá! Vim pelo site da RL TEAM. Quero começar meu protocolo."
+  )}`;
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  // Slider de Transformações
-  const [sliderRef] = useKeenSlider({
+  // HERO slider (auto-play)
+  const [heroSliderRef] = useKeenSlider({
+    loop: true,
+    drag: true,
+    slides: { perView: 1, spacing: 12 },
+    created(s) {
+      const id = setInterval(() => s.next(), 3500);
+      s.on("destroyed", () => clearInterval(id));
+    },
+  });
+
+  // TRANSFORMAÇÕES slider (mantemos instância para avançar com botão)
+  const [transSliderRef, transSlider] = useKeenSlider({
     loop: true,
     slides: { perView: 1, spacing: 16 },
     breakpoints: {
@@ -31,67 +50,78 @@ export default function Home() {
 
   return (
     <>
-      {/* SEO */}
       <Seo
-        title="Lucas Costa | Personal Trainer (Presencial e Online)"
-        description="Treinos personalizados com método científico e acompanhamento 1:1. +100 alunos transformados. Vagas limitadas para o presencial."
-        image="/images/hero-preview.jpg"
+        title="RL TEAM | Consultoria Esportiva"
+        description="Consultoria premium com protocolo individualizado, treinos progressivos, vídeos de execução e suporte diário das 6h às 22h. Resultados reais e acompanhamento próximo."
+        image="/images/logo.png"
+        faq={[
+          {
+            q: "Sou iniciante. Consigo acompanhar?",
+            a: "Sim! O protocolo começa no seu nível e evolui gradualmente.",
+          },
+          {
+            q: "Como funciona o suporte?",
+            a: "Atendimento para dúvidas das 6h às 22h via WhatsApp.",
+          },
+          {
+            q: "Tem vídeo de execução?",
+            a: "Sim. Você tem acesso à plataforma com vídeos para executar certo.",
+          },
+        ]}
       />
 
-      {/* HEADER */}
-      <header className="fixed top-0 left-0 w-full border-b border-white/5 bg-black/70 backdrop-blur-md z-[60]">
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-4">
-          <Link href="#top" className="shrink-0">
+      {/* HEADER (altura fixa para não “crescer” junto com o hero) */}
+      <header className="fixed top-0 left-0 w-full h-16 md:h-20 border-b border-white/5 bg-black/70 backdrop-blur-md z-[60]">
+        <div className="max-w-6xl mx-auto h-full flex items-center justify-between px-4 sm:px-6">
+          <Link
+            href="#top"
+            aria-label="Topo do site — RL TEAM"
+            className="shrink-0"
+          >
             <Image
-              src="/images/logonav.png"
-              alt="Lucas Costa — Personal"
-              width={120}
+              src="/images/logo.png"
+              alt="RL TEAM — Consultoria Esportiva"
+              width={130}
               height={48}
-              className="h-16 w-auto"
+              className="h-20 w-auto"
               priority
             />
           </Link>
 
-          {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6 text-sm">
-            <a href="#sobre" className="text-white/80 hover:text-primary">
+            <a href="#sobre" className="text-white/80 hover:text-white">
               Sobre
             </a>
-            <a
-              href="#transformacoes"
-              className="text-white/80 hover:text-primary"
-            >
-              Resultados
+            <a href="#oferecemos" className="text-white/80 hover:text-white">
+              O que oferecemos
             </a>
-            <a href="#planos" className="text-white/80 hover:text-primary">
+            <a href="#planos" className="text-white/80 hover:text-white">
               Planos
             </a>
             <a
               href="#faq"
-              className="text-white/80 hover:text-primary flex items-center gap-1"
+              className="text-white/80 hover:text-white flex items-center gap-1"
             >
               <HelpCircle size={16} /> FAQ
             </a>
-            <a href="#contato" className="text-white/80 hover:text-primary">
+            <a href="#contato" className="text-white/80 hover:text-white">
               Contato
             </a>
           </nav>
 
-          {/* CTA desktop */}
           <motion.a
-            href={waLink("Olá Lucas! Quero começar meus treinos com você.")}
+            href={waLink("Quero iniciar meu protocolo com a RL TEAM.")}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
-            className="hidden md:inline-block rounded-full bg-primary px-5 py-2 text-sm font-medium text-[#052a22] shadow-primary/30 shadow-lg hover:brightness-110"
+            className="hidden md:inline-block rounded-full bg-white px-5 py-2 text-sm font-semibold text-[#0b2e25] shadow-lg hover:bg-gray-100"
           >
             Fale no WhatsApp
           </motion.a>
 
-          {/* Mobile menu */}
           <button
             onClick={() => setMenuOpen((v) => !v)}
             className="md:hidden text-white text-2xl"
-            aria-label="Abrir menu"
+            aria-label={menuOpen ? "Fechar menu" : "Abrir menu"}
           >
             ☰
           </button>
@@ -101,7 +131,7 @@ export default function Home() {
           <div className="md:hidden bg-black/95 px-6 py-4 space-y-4 border-t border-white/10">
             {[
               ["#sobre", "Sobre"],
-              ["#transformacoes", "Resultados"],
+              ["#oferecemos", "O que oferecemos"],
               ["#planos", "Planos"],
               ["#faq", "FAQ"],
               ["#contato", "Contato"],
@@ -110,14 +140,14 @@ export default function Home() {
                 key={href}
                 href={href}
                 onClick={() => setMenuOpen(false)}
-                className="block text-white/90 hover:text-primary"
+                className="block text-white/90 hover:text-white"
               >
                 {label}
               </a>
             ))}
             <a
-              href={waLink("Quero começar minha transformação hoje!")}
-              className="inline-flex items-center justify-center w-full rounded-full bg-primary px-5 py-2 text-sm font-medium text-[#052a22] shadow-primary/30 shadow-lg"
+              href={waLink("Quero começar hoje com a RL TEAM.")}
+              className="inline-flex items-center justify-center w-full rounded-full bg-white px-5 py-2 text-sm font-bold text-[#0b2e25] shadow-lg"
             >
               Fale no WhatsApp
             </a>
@@ -125,8 +155,11 @@ export default function Home() {
         )}
       </header>
 
-      {/* HERO */}
-      <main id="top" className="relative pt-24 md:pt-28 text-white">
+      <main
+        id="top"
+        className="relative pt-24 md:pt-28 text-white overflow-x-hidden"
+      >
+        {/* HERO */}
         <section
           className="relative"
           style={{
@@ -137,321 +170,365 @@ export default function Home() {
         >
           <div className="absolute inset-0 bg-black/80" />
           <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-20">
-            <div className="grid md:grid-cols-2 gap-10 items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
               <div>
+                <p className="text-white/70 font-medium mb-2">
+                  CONSULTORIA ESPORTIVA
+                </p>
                 <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight">
-                  Alcance resultados em{" "}
-                  <span className="text-primary">30 dias</span> com método e
-                  acompanhamento <span className="whitespace-nowrap">1:1</span>
+                  +200 alunos transformados com a{" "}
+                  <span className="text-white">RL TEAM</span> — resultados
+                  reais, sem extremismos
                 </h1>
 
-                <p className="mt-4 text-base sm:text-lg text-white/80 max-w-xl">
-                  Planos presenciais e online, +100 alunos transformados. Método
-                  claro, ajustes semanais e acompanhamento real.
-                </p>
-
-                <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-red-500/95 px-3 py-1 text-xs font-semibold shadow-red-500/40 shadow">
-                  ⚠️ Últimas 3 vagas no Plano Premium!
+                {/* Chips de credibilidade */}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs text-white/90">
+                    <Star size={14} /> +200 transformações
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs text-white/90">
+                    <Clock size={14} /> Suporte 6h–22h
+                  </span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-white/10 px-3 py-1 text-xs text-white/90">
+                    <CheckCircle2 size={14} /> Avaliação gratuita
+                  </span>
                 </div>
+
+                <p className="mt-4 text-base sm:text-lg text-white/80 max-w-xl">
+                  Consultoria esportiva com protocolo individualizado, treinos
+                  progressivos e acompanhamento diário.
+                  <b> Suporte ativo das 6h às 22h</b> para você nunca ficar sem
+                  resposta.
+                </p>
 
                 <div className="mt-6 flex flex-col sm:flex-row gap-3">
                   <motion.a
-                    href={waLink(
-                      "Quero um plano ideal para mim. Pode me ajudar a começar hoje?"
-                    )}
+                    href={waLink("Quero meu protocolo com a RL TEAM.")}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-[15px] font-semibold text-[#052a22] shadow-primary/30 shadow-lg"
+                    className="inline-flex items-center justify-center rounded-full bg-white px-6 py-3 text-[15px] font-semibold text-[#0b2e25] shadow-lg hover:bg-gray-100"
                   >
-                    Começar sua transformação
+                    🚀 Começar agora no WhatsApp
                   </motion.a>
 
                   <div className="inline-flex items-center gap-2 text-xs sm:text-sm text-white/70">
-                    <CheckCircle2 size={16} className="text-primary" />
+                    <CheckCircle2 size={16} className="text-white" />
                     Avaliação gratuita no primeiro contato
                   </div>
                 </div>
               </div>
 
-              <div className="relative flex justify-center md:justify-end">
-                <div className="absolute -bottom-2 right-6 h-24 w-24 rounded-full bg-primary/30 blur-3xl" />
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6 }}
-                  className="rounded-2xl bg-white/5 p-2 ring-1 ring-white/10 backdrop-blur"
-                >
-                  <Image
-                    src="/images/foto-lucas.png"
-                    alt="Lucas Costa — Personal"
-                    width={420}
-                    height={420}
-                    className="h-auto w-[280px] sm:w-[340px] md:w-[380px] rounded-xl object-cover shadow-[0_0_40px_#10B98190]"
-                    priority
-                  />
-                </motion.div>
+              {/* Hero Carrossel – cresce sem reflow (nav não muda de tamanho) */}
+              <div className="relative w-full max-w-[480px] mx-auto">
+                <div ref={heroSliderRef} className="keen-slider w-full">
+                  {[
+                    { src: "/images/rl-1.jpg", alt: "RL TEAM — foto 1" },
+                    { src: "/images/rl-2.jpg", alt: "RL TEAM — foto 2" },
+                    { src: "/images/rl-3.jpg", alt: "RL TEAM — foto 3" },
+                  ].map((f, i) => (
+                    <div key={i} className="keen-slider__slide min-w-0">
+                      <div className="relative w-full aspect-[4/5] sm:aspect-[1/1] rounded-xl overflow-hidden">
+                        <Image
+                          src={f.src}
+                          alt={f.alt}
+                          fill
+                          sizes="(max-width: 640px) 92vw, (max-width: 1024px) 480px, 480px"
+                          className="object-cover transition-transform duration-500 ease-out hover:scale-105 will-change-transform"
+                          priority={i === 0}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* SOBRE */}
-        <section id="sobre" className="bg-secondary text-white">
+        <section id="sobre" className="bg-[#0d1622]">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 md:py-16 text-center">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">
-              Quem é Lucas Costa?
-            </h2>
+            <h2 className="text-2xl sm:text-3xl font-bold mb-3">Quem somos</h2>
             <p className="text-white/80 text-base sm:text-lg">
-              Personal trainer focado em <b>performance, saúde e estética</b>.
-              Planos sob medida para sua rotina com ajustes semanais e
-              acompanhamento próximo. Resultado não vem por acaso vem do método,
-              constância e execução perfeita.
+              A <b>RL TEAM</b> é uma consultoria esportiva focada em resultados
+              reais, alinhada à sua rotina e objetivo. Nosso método combina
+              treino, acompanhamento e educação prática para você executar tudo
+              com segurança e eficiência.
             </p>
           </div>
         </section>
 
-        {/* TRANSFORMAÇÕES */}
-        <section id="transformacoes" className="px-4 sm:px-6 py-14 md:py-16">
+        {/* O QUE OFERECEMOS */}
+        <section id="oferecemos" className="px-4 sm:px-6 py-14 md:py-16">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-8">
-              Transformações Reais
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10">
+              O que estamos oferecendo?
             </h2>
-
-            <div ref={sliderRef} className="keen-slider">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
               {[
-                {
-                  img: "/images/antes3.webp",
-                  alt: "Antes e depois — Diego",
-                  nome: "Diego",
-                  txt: "Foco, adaptação e resultado rápido. Superou minhas expectativas.",
-                },
-                {
-                  img: "/images/antes1.webp",
-                  alt: "Antes e depois — Juliana",
-                  nome: "Juliana",
-                  txt: "Eliminei 12kg com o acompanhamento do Lucas. Mudou minha vida!",
-                },
-                {
-                  img: "/images/antes2.webp",
-                  alt: "Antes e depois — Victor",
-                  nome: "Victor",
-                  txt: "Voltei a treinar e nunca me senti tão bem!",
-                },
-              ].map((c, i) => (
+                [
+                  "Treinos alinhados à dieta e objetivo",
+                  "Planejamento coerente com sua estratégia nutricional e meta.",
+                ],
+                [
+                  "Protocolo totalmente individualizado",
+                  "Ajustado às suas necessidades, histórico e rotina.",
+                ],
+                [
+                  "Planilha personalizada (treino + cardio)",
+                  "Estrutura clara, progressiva e fácil de seguir.",
+                ],
+                [
+                  "Plataforma com vídeos de execução",
+                  "Demonstrações para garantir técnica e segurança.",
+                ],
+                [
+                  "Contato para dúvidas 6h–22h",
+                  "Suporte ativo para evoluir sem travar na execução.",
+                ],
+                [
+                  "Acompanhamento completo da equipe",
+                  "Feedbacks, ajustes e monitoramento constante.",
+                ],
+              ].map(([t, d]) => (
                 <div
-                  key={i}
-                  className="keen-slider__slide overflow-hidden rounded-xl border border-white/10 bg-[#0d1622] transition shadow-lg hover:border-primary/40"
+                  key={t}
+                  className="rounded-2xl border border-white/10 bg-[#0d1622] p-6"
                 >
-                  <Image
-                    src={c.img}
-                    alt={c.alt}
-                    width={500}
-                    height={360}
-                    className="h-[320px] w-full object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold">{c.nome}</h3>
-                    <p className="text-white/70 text-sm italic">{c.txt}</p>
-                    <a
-                      href="#planos"
-                      className="mt-3 inline-block rounded-full bg-primary px-4 py-2 text-sm font-semibold text-[#052a22]"
-                    >
-                      Ver plano semelhante
-                    </a>
-                  </div>
+                  <h4 className="text-white font-semibold">{t}</h4>
+                  <p className="mt-2 text-white/70">{d}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
 
+        {/* TRANSFORMAÇÕES + botão "Mais depoimentos" */}
+        <section className="px-4 sm:px-6 py-14 md:py-16">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
+              Transformações Reais
+            </h2>
+
+            <div className="relative">
+              <div ref={transSliderRef} className="keen-slider">
+                {[
+                  {
+                    img: "/images/antes3.jpg",
+                    alt: "Antes e depois — Aluno 1",
+                    nome: "Aluno 1",
+                    txt: "Plano objetivo e acompanhamento próximo.",
+                  },
+                  {
+                    img: "/images/antes1.jpg",
+                    alt: "Antes e depois — Aluna 2",
+                    nome: "Aluna 2",
+                    txt: "Redução de medidas e mais disposição.",
+                  },
+                  {
+                    img: "/images/antes2.jpg",
+                    alt: "Antes e depois — Aluno 3",
+                    nome: "Aluno 3",
+                    txt: "Execução correta = evolução consistente.",
+                  },
+                ].map((c, i) => (
+                  <div
+                    key={i}
+                    className="keen-slider__slide overflow-hidden rounded-xl border border-white/10 bg-[#0d1622] transition shadow-lg hover:border-white/40"
+                  >
+                    <div className="relative w-full aspect-[5/3]">
+                      <Image
+                        src={c.img}
+                        alt={c.alt}
+                        fill
+                        sizes="(max-width: 1024px) 100vw, 500px"
+                        className="object-cover transition-transform duration-500 ease-out hover:scale-105"
+                      />
+                    </div>
+                    <div className="p-4">
+                      <h3 className="text-lg font-semibold">{c.nome}</h3>
+                      <p className="text-white/70 text-sm italic">{c.txt}</p>
+                      <a
+                        href="#planos"
+                        className="mt-3 inline-block rounded-full bg-white px-4 py-2 text-sm font-semibold text-[#0b2e25]"
+                      >
+                        Ver plano semelhante
+                      </a>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Botão que sinaliza e avança o carrossel */}
+              <button
+                onClick={() => transSlider.current?.next()}
+                className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-white/90 px-3 py-1.5 text-xs sm:text-sm font-semibold text-[#0b2e25] shadow-md hover:bg-white"
+                aria-label="Mais depoimentos"
+                type="button"
+              >
+                Mais depoimentos <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        </section>
+
         {/* PLANOS */}
-        <section id="planos" className="bg-secondary text-white">
+        <section id="planos" className="bg-[#0d1622]">
           <div className="max-w-6xl mx-auto px-4 sm:px-6 py-14 md:py-16">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-10">
-              Escolha o plano ideal
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-10">
+              Planos
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-              {/* Online */}
               <PlanCard
-                title="Consultoria Online"
+                title="Mensal"
+                price="R$ 250"
                 bullets={[
-                  "Treino no app com vídeos e execução perfeita",
-                  "Anamnese e avaliação postural",
-                  "Ajustes semanais e suporte direto",
+                  "Protocolo individualizado",
+                  "Planilha personalizada",
+                  "Vídeos de execução + suporte 6h–22h",
                 ]}
-                pricePrefix="A partir de"
-                price="R$ 149,90/mês"
-                cta="Quero esse plano"
-                href={waLink(
-                  "Tenho interesse na Consultoria Online. Pode me orientar?"
-                )}
+                cta="Quero o Mensal"
+                href={waLink("Quero o plano Mensal (R$ 250).")}
               />
 
-              {/* Presencial */}
-              <PlanCard
-                title="Consultoria Presencial"
-                bullets={[
-                  "Treinos presenciais (academia/condomínio)",
-                  "Correção de técnica e motivação ao vivo",
-                  "App com o plano e acompanhamento",
-                ]}
-                smallNote="*Sujeito a valor adicional conforme a academia."
-                pricePrefix="A partir de"
-                price="R$ 599,00/mês"
-                cta="Quero esse plano"
-                href={waLink("Quero falar sobre o Plano Presencial.")}
-              />
-
-              {/* Premium */}
               <PlanCard
                 highlight
-                title="Consultoria Premium"
+                title="Bimestral"
+                price="R$ 400"
                 bullets={[
-                  "Tudo do online + presencial (conforme disponibilidade)",
-                  "Guia de alimentação prática p/ resultados",
-                  "Suporte intensivo por 30 dias",
+                  "Tudo do Mensal + ajustes quinzenais",
+                  "Acompanhamento mais próximo",
+                  "Acesso completo à plataforma",
                 ]}
-                oldPrice="R$ 500/mês"
-                price="R$ 379,90/mês"
-                tag="+ Popular"
-                cta="Quero esse plano"
-                href={waLink(
-                  "Quero a Consultoria Premium com o combo completo."
-                )}
+                tag="Mais escolhido"
+                cta="Quero o Bimestral"
+                href={waLink("Quero o plano Bimestral (R$ 400).")}
+              />
+
+              <PlanCard
+                title="Trimestral"
+                price="R$ 600"
+                bullets={[
+                  "Tudo do Bimestral + progressões avançadas",
+                  "Check-ins estratégicos",
+                  "Priorização no suporte 6h–22h",
+                ]}
+                cta="Quero o Trimestral"
+                href={waLink("Quero o plano Trimestral (R$ 600).")}
               />
             </div>
           </div>
         </section>
 
-        {/* CONSULTA COMPLEMENTAR */}
-        <section className="relative overflow-hidden bg-gradient-to-b from-[#0b1420] to-[#0a1622] text-white">
-          <div className="absolute inset-0 -z-10">
-            <div className="absolute left-10 top-12 h-40 w-40 rounded-full bg-primary/20 blur-3xl" />
-          </div>
-          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center px-4 sm:px-6 py-14 md:py-16">
-            <div className="order-2 md:order-1">
-              <h2 className="text-2xl sm:text-3xl font-bold text-primary mb-3">
-                Consulta complementar personalizada
-              </h2>
-              <p className="text-white/80 text-base sm:text-lg">
-                Para acelerar resultados, trabalhamos com parceiros(as) em saúde
-                e estética. Protocolos sob medida para sua meta.
-              </p>
-              <a
-                href={waLink(
-                  "Gostaria de saber sobre a consulta complementar."
-                )}
-                className="mt-6 inline-flex rounded-full bg-primary px-6 py-3 text-[15px] font-semibold text-[#052a22] shadow-primary/30 shadow-lg"
-              >
-                Quero agendar
-              </a>
+        {/* DIFERENCIAIS */}
+        <section className="px-4 sm:px-6 py-14 md:py-16">
+          <div className="max-w-5xl mx-auto text-center">
+            <h2 className="text-2xl sm:text-3xl font-bold mb-8">
+              Diferenciais RL TEAM
+            </h2>
+            <div className="grid gap-6 md:grid-cols-3">
+              <div className="rounded-2xl border border-white/10 bg-[#0d1622] p-6">
+                <h4 className="text-white font-semibold">
+                  🍽️ Acompanhamento Nutricional
+                </h4>
+                <p className="mt-2 text-white/70">
+                  Plano alimentar ajustado à sua rotina, sem radicalismos.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-[#0d1622] p-6">
+                <h4 className="text-white font-semibold">🏋️ Treinamento</h4>
+                <p className="mt-2 text-white/70">
+                  Planilha progressiva, com vídeos de execução e correção por
+                  vídeo chamada.
+                </p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-[#0d1622] p-6">
+                <h4 className="text-white font-semibold">💊 Fármacos</h4>
+                <p className="mt-2 text-white/70">
+                  Orientação segura e responsável, sempre alinhada ao seu
+                  objetivo.
+                </p>
+              </div>
             </div>
 
-            <div className="order-1 md:order-2 flex justify-center md:justify-end">
-              <Image
-                src="/images/consulta-parceria.png"
-                alt="Consulta com nutricionista parceira"
-                width={420}
-                height={420}
-                className="h-auto w-[260px] sm:w-[340px] md:w-[380px] rounded-xl object-cover shadow-[0_0_40px_#10B98190]"
-              />
-            </div>
+            <blockquote className="mt-10 text-white/90 text-lg italic">
+              “Imagine uma nova história para sua vida e acredite nela!” —{" "}
+              <span className="not-italic">Paulo Coelho</span>
+            </blockquote>
           </div>
         </section>
 
         {/* FAQ */}
         <section id="faq" className="px-4 sm:px-6 py-14 md:py-16">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl sm:text-3xl font-bold text-primary text-center mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8">
               Perguntas Frequentes
             </h2>
             <div className="space-y-4">
               {[
                 [
-                  "Preciso já ter experiência para começar?",
-                  "Não! Os treinos são adaptados para qualquer nível, incluindo iniciantes absolutos.",
+                  "Sou iniciante. Consigo acompanhar?",
+                  "Sim! O protocolo começa no seu nível e evolui gradualmente.",
                 ],
                 [
-                  "O plano online funciona mesmo?",
-                  "Sim! Você recebe treino no app, ajustes semanais e suporte direto no WhatsApp.",
+                  "Como funciona o suporte?",
+                  "Atendimento para dúvidas das 6h às 22h via WhatsApp.",
                 ],
                 [
-                  "Consigo treinar mesmo com pouco tempo?",
-                  "Claro! Montamos treinos eficientes para sua rotina máximo resultado no menor tempo.",
+                  "Tem vídeo de execução?",
+                  "Sim. Você tem acesso à plataforma com vídeos para executar certo.",
                 ],
                 [
-                  "Os treinos incluem orientação alimentar?",
-                  "Sim! Todos os planos incluem guia de nutrição prática.",
+                  "Posso treinar em casa?",
+                  "Sim, montamos de acordo com sua estrutura: casa, academia ou condomínio.",
                 ],
                 [
-                  "O acompanhamento é feito por quanto tempo?",
-                  "Você escolhe! Oferecemos pacotes de 3, 6 ou 12 meses.",
+                  "Posso trocar de plano depois?",
+                  "Pode. É só avisar com antecedência mínima de 48h.",
                 ],
-                [
-                  "Posso trocar de plano depois de começar?",
-                  "Sim! É só avisar com 48h de antecedência.",
-                ],
-              ].map(([pergunta, resposta], i) => (
-                <AccordionItem
-                  key={i}
-                  pergunta={pergunta}
-                  resposta={resposta}
-                />
+              ].map(([q, a], i) => (
+                <AccordionItem key={i} pergunta={q} resposta={a} />
               ))}
             </div>
           </div>
         </section>
 
-        {/* CONTATO / FOOTER-BANNER */}
+        {/* CONTATO */}
         <section
           id="contato"
-          className="relative overflow-hidden bg-gradient-to-b from-primary/20 via-primary/10 to-transparent"
+          className="relative overflow-hidden bg-gradient-to-b from-white/20 via-white/10 to-transparent"
         >
           <div className="max-w-5xl mx-auto px-4 sm:px-6 py-14 md:py-16 text-center">
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-              Pronto pra começar sua transformação?
+              ⚡ Pronto para começar sua transformação?
             </h2>
             <p className="text-white/80 max-w-2xl mx-auto">
-              Fale comigo no WhatsApp. Vamos traçar o melhor caminho para
-              alcançar seus objetivos com segurança e resultado.
+              As vagas presenciais são limitadas. Garanta seu lugar na RL TEAM
+              hoje mesmo e comece com uma avaliação gratuita.
             </p>
 
             <div className="mt-5 inline-flex items-center gap-2 rounded-full bg-white text-[#0b2e25] px-5 py-2 text-sm font-semibold shadow-xl">
-              ⭐ +100 alunos transformados com acompanhamento profissional
+              ⭐ Resultados reais com acompanhamento profissional
             </div>
 
             <div className="mt-6">
               <a
-                href={waLink("Quero começar agora!")}
+                href={waLink("Quero iniciar com a RL TEAM.")}
                 className="inline-flex rounded-full bg-white px-6 py-3 text-[15px] font-bold text-[#0b2e25] shadow-xl hover:bg-gray-100"
               >
-                💬 Falar com o Lucas
+                💬 Falar no WhatsApp
               </a>
-              <p className="mt-2 text-white/60 text-sm">
-                Atendimento rápido via WhatsApp
-              </p>
-              <p className="mt-6 text-white/70 text-sm">
-                Preferir Instagram?{" "}
-                <a
-                  href="https://instagram.com/treinador_lucascosta"
-                  className="font-semibold underline hover:text-primary"
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  @treinador_lucascosta
-                </a>
-              </p>
             </div>
           </div>
         </section>
       </main>
+
       <SiteFooter />
 
-      {/* ✅ um único botão flutuante (evita “esmagar” com outro) */}
+      {/* Botão flutuante único */}
       <FloatingWhatsapp
-        href={waLink("Vamos começar?")}
+        href={waLink("Quero começar hoje!")}
         label="Vamos começar? 🚀"
       />
     </>
@@ -461,30 +538,19 @@ export default function Home() {
 /* -------------------------------------------
    COMPONENTE DE CARD DE PLANO (reutilizável)
 -------------------------------------------- */
-function PlanCard({
-  highlight,
-  title,
-  bullets = [],
-  smallNote,
-  oldPrice,
-  price,
-  pricePrefix,
-  tag,
-  cta,
-  href,
-}) {
+function PlanCard({ highlight, title, bullets = [], price, tag, cta, href }) {
   return (
     <div
       className={[
         "relative rounded-2xl border p-6 md:p-7 shadow-xl",
         "flex flex-col",
         highlight
-          ? "border-primary/40 bg-gradient-to-b from-primary/10 to-transparent ring-1 ring-primary/30"
+          ? "border-white/40 bg-gradient-to-b from-white/10 to-transparent ring-1 ring-white/30"
           : "border-white/10 bg-[#0d1622]",
       ].join(" ")}
     >
       {highlight && (
-        <span className="absolute -top-3 right-5 rounded-full bg-primary px-3 py-1 text-xs font-bold text-[#052a22] shadow-lg">
+        <span className="absolute -top-3 right-5 rounded-full bg-white px-3 py-1 text-xs font-bold text-[#0b2e25] shadow-lg">
           {tag || "Destaque"}
         </span>
       )}
@@ -494,26 +560,14 @@ function PlanCard({
       <ul className="mt-4 flex-1 space-y-2 text-white/80">
         {bullets.map((b, i) => (
           <li key={i} className="flex items-start gap-2">
-            <CheckCircle2 className="mt-0.5 shrink-0 text-primary" size={18} />
+            <CheckCircle2 className="mt-0.5 shrink-0 text-white" size={18} />
             <span className="text-sm leading-relaxed">{b}</span>
           </li>
         ))}
       </ul>
 
-      {smallNote && (
-        <p className="mt-3 text-xs text-white/60 italic">{smallNote}</p>
-      )}
-
       <div className="mt-5">
-        {oldPrice && (
-          <p className="text-white/60 line-through text-sm mb-1">{oldPrice}</p>
-        )}
-
         <div className="flex items-baseline gap-2">
-          {pricePrefix && (
-            <span className="text-xs text-white/60">{pricePrefix}</span>
-          )}
-          {/* evita “esmagar”/quebrar valor */}
           <span className="text-2xl md:text-3xl font-extrabold tracking-tight whitespace-nowrap">
             {price}
           </span>
@@ -523,9 +577,7 @@ function PlanCard({
           href={href}
           className={[
             "mt-4 inline-flex w-full items-center justify-center rounded-full px-5 py-2.5 text-sm font-semibold shadow-lg",
-            highlight
-              ? "bg-white text-[#0b2e25] hover:bg-gray-100"
-              : "bg-primary text-[#052a22] hover:brightness-110",
+            "bg-white text-[#0b2e25] hover:bg-gray-100",
           ].join(" ")}
         >
           {cta}
