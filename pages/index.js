@@ -333,7 +333,7 @@ export default function Home() {
                   {
                     img: "/images/antes3.jpg",
                     alt: "Antes e depois — Aluno 1",
-                    nome: "Aluno 1",
+                    nome: "Aluna 1",
                     txt: "Plano objetivo e acompanhamento próximo.",
                   },
                   {
@@ -357,13 +357,13 @@ export default function Home() {
                   {
                     img: "/images/antes5.jpg", // NOVO
                     alt: "Antes e depois — Aluna 5",
-                    nome: "Aluna 5",
+                    nome: "Aluno 5",
                     txt: "Evolução no shape e postura.",
                   },
                   {
                     img: "/images/antes6.jpg", // NOVO
                     alt: "Antes e depois — Aluna 5",
-                    nome: "Aluna 6",
+                    nome: "Aluno 6",
                     txt: "Redução de gordura abdominal e mais definição, mantendo a massa magra.",
                   },
                 ].map((c, i) => (
